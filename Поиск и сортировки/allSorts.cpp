@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string.h>
 
 using namespace std;
 
@@ -50,6 +51,55 @@ void bubleSort(int* mas, int N) {
                 swap(mas[j], mas[j + 1]);
 }
 
+
+void mergeSort(int* mas, int l, int r) {
+    if (r - l <= 1) {
+        if (mas[r] < mas[l])
+            swap(mas[r], mas[l]);
+        return;
+    }
+
+    int center = (r + l) / 2;
+    mergeSort(mas, l, center);
+    mergeSort(mas, center + 1, r);
+
+    int* mergedMas = (int*) malloc(sizeof(int) * (r - l + 1));
+    int i = 0, j = 0, cnt = 0;
+    int N1 = center - l + 1;
+    int N2 = r - center;
+    while((i < N1) && (j < N2)) {
+        if (mas[l + i] < mas[center + j + 1]) {
+            mergedMas[cnt] = mas[l + i];
+            i++;
+        }
+        else {
+            mergedMas[cnt] = mas[center + j + 1];
+            j++;
+        }
+        cnt++;
+    }
+
+    while(i < N1) {
+        mergedMas[cnt] = mas[l + i];
+        i++;
+        cnt++;
+    }
+
+    while(j < N2) {
+        mergedMas[cnt] = mas[center + j + 1];
+        j++;
+        cnt++;
+    }
+
+    memcpy(mas + l, mergedMas, sizeof(int) * (r - l + 1));
+    
+    free(mergedMas);
+}
+
+
+void quickSort(int* mas, int l, int R) {
+
+}
 
 int main() {
     ifstream inputFile;
